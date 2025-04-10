@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.스마트자가진단" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MyApp" parent="Theme.AppCompat.Light">
+        <!-- 또는 Theme.MaterialComponents.*, Theme.AppCompat.Light.NoActionBar 등
+             원하는 AppCompat 기반 테마를 사용하세요. -->
+        <!-- 커스텀 색상, 폰트 등을 여기에 정의 -->
+    </style>
+</resources>
