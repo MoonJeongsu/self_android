@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "10885790188",
+    "project_id": "smart-self-df2ca",
+    "storage_bucket": "smart-self-df2ca.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10885790188:android:1e2d0d9a24b9d178c3a8c9",
+        "android_client_info": {
+          "package_name": "com.smmit.self"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqKRXt09qPtwt1pTQsB0Vs1VpzIblrxkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# JavascriptInterface가 붙은 모든 메서드는 유지
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
