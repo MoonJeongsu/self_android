@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="admin-styles.css">
+  <title>진단키트 등록 - 상세</title>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <h3>스마트 자가진단 관리자 센터</h3>
+      </div>
+      <nav class="menu">
+        <div class="menu-item active">자가진단 현황</div>
+        <div class="menu-item">진단 문항 관리</div>
+        <div class="menu-item">설정</div>
+      </nav>
+      <div class="profile">
+        <div class="profile-avatar"></div>
+        <p>안녕하세요 홍길동님</p>
+        <button>로그아웃</button>
+      </div>
+    </header>
+
+    <div class="breadcrumb">
+      <span>홈</span> &gt;
+      <span>자가진단 현황</span> &gt;
+      <span class="current">진단키트 등록</span>
+    </div>
+
+    <div class="content">
+      <h1 class="page-title">진단키트 등록 상세</h1>
+
+      <div class="info-section">
+        <h6>등록 정보</h6>
+        <table class="info-table">
+          <tr>
+            <th>성명</th>
+            <td>홍길동</td>
+            <th>키트 번호</th>
+            <td>KIT-2025-0001</td>
+          </tr>
+          <tr>
+            <th>성별</th>
+            <td class="gender-male">남성</td>
+            <th>생년월일</th>
+            <td>1980-12-01</td>
+          </tr>
+          <tr>
+            <th>등록일시</th>
+            <td>2025-06-15 14:32</td>
+            <th>진단 결과</th>
+            <td class="result-abnormal">건강 이상</td>
+          </tr>
+          <tr>
+            <th>증상</th>
+            <td colspan="3">발열, 기침</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="photo-section">
+        <h6>진단키트 사진</h6>
+        <div class="photo-list">
+          <div class="photo-thumb">
+            <svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 400 300">
+              <rect width="400" height="300" fill="#F0FAFF"/>
+              <rect x="120" y="60" width="160" height="180" rx="8" fill="#fff" stroke="#3EB4EB" stroke-width="2"/>
+              <circle cx="200" cy="170" r="30" fill="#FB5561" opacity="0.8"/>
+              <text x="200" y="175" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="12">양성</text>
+            </svg>
+            <span>사진 1</span>
+          </div>
+          <div class="photo-thumb">
+            <svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 400 300">
+              <rect width="400" height="300" fill="#F0FAFF"/>
+              <rect x="100" y="50" width="200" height="200" rx="8" fill="#fff" stroke="#3EB4EB" stroke-width="2"/>
+              <line x1="170" y1="160" x2="230" y2="180" stroke="#FB5561" stroke-width="3"/>
+              <line x1="230" y1="160" x2="170" y2="180" stroke="#FB5561" stroke-width="3"/>
+            </svg>
+            <span>사진 2</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-back">← 돌아가기</button>
+    </div>
+  </div>
+</body>
+</html>

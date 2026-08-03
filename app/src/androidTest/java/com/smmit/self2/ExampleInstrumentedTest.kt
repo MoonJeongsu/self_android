@@ -1,4 +1,4 @@
-package com.smmit.self
+package com.smmit.self2
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.smmit.self", appContext.packageName)
+        assertEquals("com.smmit.self2", appContext.packageName)
     }
 }

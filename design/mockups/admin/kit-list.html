@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="admin-styles.css">
+  <title>진단키트 등록 - 리스트</title>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <h3>스마트 자가진단 관리자 센터</h3>
+      </div>
+      <nav class="menu">
+        <div class="menu-item active">자가진단 현황</div>
+        <div class="menu-item">진단 문항 관리</div>
+        <div class="menu-item">설정</div>
+      </nav>
+      <div class="profile">
+        <div class="profile-avatar"></div>
+        <p>안녕하세요 홍길동님</p>
+        <button>로그아웃</button>
+      </div>
+    </header>
+
+    <div class="breadcrumb">
+      <span>홈</span> &gt;
+      <span>자가진단 현황</span> &gt;
+      <span class="current">진단키트 등록</span>
+    </div>
+
+    <div class="content">
+      <h1 class="page-title">진단키트 등록</h1>
+
+      <div class="filter-box">
+        <div class="filter-group">
+          <label>성별</label>
+          <select><option>전체</option></select>
+        </div>
+        <div class="filter-range">
+          <div class="filter-group">
+            <label>등록 일자</label>
+            <select><option>전체</option></select>
+          </div>
+          <div class="filter-group">
+            <label>&nbsp;</label>
+            <input type="date" value="2025-01-01">
+          </div>
+          <div class="filter-group">
+            <label>&nbsp;</label>
+            <input type="date" value="2025-06-30">
+          </div>
+        </div>
+        <div class="search-group">
+          <div class="filter-group">
+            <label>직접 검색</label>
+            <input type="text" placeholder="성명 검색">
+          </div>
+          <button class="btn-search">검색</button>
+        </div>
+      </div>
+
+      <div class="action-btns">
+        <button class="btn-pdf">PDF 다운</button>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-title">총 <span>1,248</span>건</div>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>성명</th>
+              <th>성별</th>
+              <th>생년월일</th>
+              <th>등록일시</th>
+              <th>진단 결과</th>
+              <th>상세정보</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>홍길동</td>
+              <td class="gender-male">남성</td>
+              <td>1980-12-01</td>
+              <td>2025-06-15 14:32</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>김지민</td>
+              <td class="gender-female">여성</td>
+              <td>1986-01-27</td>
+              <td>2025-06-14 09:15</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>박서준</td>
+              <td class="gender-male">남성</td>
+              <td>1989-08-03</td>
+              <td>2025-06-13 16:48</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>이하늘</td>
+              <td class="gender-female">여성</td>
+              <td>2010-01-30</td>
+              <td>2025-06-12 11:22</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>정유진</td>
+              <td class="gender-female">여성</td>
+              <td>2001-03-27</td>
+              <td>2025-06-11 08:05</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>최민수</td>
+              <td class="gender-female">여성</td>
+              <td>2002-09-13</td>
+              <td>2025-06-10 19:40</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>한가인</td>
+              <td class="gender-female">여성</td>
+              <td>2007-11-27</td>
+              <td>2025-06-09 13:18</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>서예지</td>
+              <td class="gender-female">여성</td>
+              <td>1995-05-07</td>
+              <td>2025-06-08 10:55</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>장동건</td>
+              <td class="gender-male">남성</td>
+              <td>2014-12-17</td>
+              <td>2025-06-07 15:30</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>유재석</td>
+              <td class="gender-male">남성</td>
+              <td>1987-03-20</td>
+              <td>2025-06-06 07:42</td>
+              <td class="result-abnormal">건강 이상</td>
+              <td><button class="btn-detail">확인</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <button>«</button>
+          <button>‹</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button>7</button>
+          <button>8</button>
+          <button>9</button>
+          <button>10</button>
+          <button>›</button>
+          <button>»</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.smmit.self.ui.theme
+package com.smmit.self2.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

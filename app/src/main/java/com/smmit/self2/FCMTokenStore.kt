@@ -1,4 +1,4 @@
-package com.smmit.self
+package com.smmit.self2
 
 object FCMTokenStore {
     @Volatile

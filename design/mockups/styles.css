@@ -1,0 +1,320 @@
+@import url('https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.phone {
+  width: 360px;
+  height: 800px;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.statusbar {
+  height: 32px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1b1b1c;
+}
+
+.statusbar-icons {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.header {
+  height: 48px;
+  position: relative;
+}
+
+.btn-back {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.steps {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px;
+  margin-top: 20px;
+}
+
+.step {
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.step.done,
+.step.inactive {
+  background: #e9e9ec;
+  color: #b3b4b6;
+}
+
+.step.active {
+  background: #3eb4eb;
+  color: #fff;
+}
+
+.content {
+  padding: 28px 20px 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #1b1b1c;
+}
+
+.desc {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #353637;
+}
+
+.card {
+  margin-top: 12px;
+  background: #fafafa;
+  border-radius: 2px;
+  padding: 20px;
+  width: 320px;
+}
+
+.card-label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #1b1b1c;
+  margin-bottom: 12px;
+}
+
+.upload-zone {
+  width: 280px;
+  height: 180px;
+  border: 1px dashed #3eb4eb;
+  border-radius: 2px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.upload-zone img {
+  width: 24px;
+  height: 24px;
+}
+
+.upload-zone .hint {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #3eb4eb;
+}
+
+.upload-zone .sub {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #9d9fa0;
+  text-align: center;
+  padding: 0 16px;
+}
+
+.preview {
+  width: 280px;
+  height: 180px;
+  border-radius: 2px;
+  background: #e9e9ec;
+  position: relative;
+  overflow: hidden;
+}
+
+.preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview .delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  background: rgba(27, 27, 28, 0.6);
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.retake {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #3eb4eb;
+}
+
+.btns {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 72px;
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  flex: 1;
+  height: 48px;
+  border: none;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.btn-prev {
+  background: #eff0f3;
+  color: #9d9fa0;
+}
+
+.btn-next {
+  background: #3eb4eb;
+  color: #fff;
+}
+
+.navbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46px;
+  background: #f6f6f8;
+  display: flex;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8f8f8f;
+  font-size: 14px;
+}
+
+/* flow board */
+.flow-board {
+  width: 1200px;
+  height: 900px;
+  background: #fff;
+  padding: 40px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+}
+
+.flow-board h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1b1b1c;
+  margin-bottom: 8px;
+}
+
+.flow-board p {
+  font-size: 14px;
+  color: #575758;
+  margin-bottom: 32px;
+}
+
+.flow-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.flow-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 200px;
+}
+
+.flow-item .label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #353637;
+  text-align: center;
+  line-height: 18px;
+}
+
+.flow-item.new .label {
+  color: #3eb4eb;
+}
+
+.flow-arrow {
+  font-size: 24px;
+  color: #b3b4b6;
+  margin-top: 380px;
+}
+
+.flow-phone {
+  transform: scale(0.55);
+  transform-origin: top center;
+  width: 360px;
+  height: 800px;
+  border: 1px solid #e9e9ec;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.flow-phone iframe,
+.flow-phone .phone {
+  transform: scale(1);
+}
+
+.badge-new {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #ecf7fd;
+  color: #3eb4eb;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+  margin-top: 4px;
+}
