@@ -7,4 +7,6 @@
              원하는 AppCompat 기반 테마를 사용하세요. -->
         <!-- 커스텀 색상, 폰트 등을 여기에 정의 -->
     </style>
+    <!-- WebView 앱: 시스템 바 영역과 콘텐츠 겹침 방지 -->
+    <style name="Theme.SelfApp" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>

@@ -2,23 +2,31 @@ package com.smmit.self2
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.WindowCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import java.io.File
 
@@ -28,6 +36,9 @@ class MainActivity : AppCompatActivity() {
     private var lastBackPressed: Long = 0
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
     private var cameraPhotoUri: Uri? = null
+    private var pendingPath: String = "/splash"
+    private var networkDialog: AlertDialog? = null
+    private var hasLoadedInitialUrl = false
 
     /** 퍼미션 목록 */
     private val requiredPermissions: Array<String> by lazy {
@@ -90,6 +101,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 시스템 상태바/네비바와 WebView 콘텐츠가 겹치지 않도록 처리
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         setContentView(R.layout.activity_main)
 
         webView = findViewById(R.id.myWebView)
@@ -104,7 +117,18 @@ class MainActivity : AppCompatActivity() {
             textZoom = 100
         }
 
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                if (request?.isForMainFrame == true && !isNetworkAvailable()) {
+                    showNetworkDialog()
+                }
+            }
+        }
         webView.webChromeClient = object : WebChromeClient() {
             override fun onGeolocationPermissionsShowPrompt(
                 origin: String,
@@ -139,6 +163,14 @@ class MainActivity : AppCompatActivity() {
         webView.addJavascriptInterface(JSBridge(), "AndroidBridge")
 
         loadUrl("/splash")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isNetworkAvailable() && (networkDialog?.isShowing == true || !hasLoadedInitialUrl)) {
+            dismissNetworkDialog()
+            loadUrl(pendingPath)
+        }
     }
 
     private fun launchFileChooser(params: WebChromeClient.FileChooserParams? = null) {
@@ -209,8 +241,59 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadUrl(path: String) {
+        pendingPath = path
+        if (!isNetworkAvailable()) {
+            showNetworkDialog()
+            return
+        }
+        dismissNetworkDialog()
         val base = "https://smartjaga.gongjak.dev"
         webView.loadUrl("$base$path")
+        hasLoadedInitialUrl = true
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+            (
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+                )
+    }
+
+    private fun showNetworkDialog() {
+        if (isFinishing || isDestroyed) return
+        if (networkDialog?.isShowing == true) return
+
+        networkDialog = AlertDialog.Builder(this)
+            .setTitle("네트워크 연결 필요")
+            .setMessage("네트워크에 연결되어 있지 않습니다.\n연결 후 다시 시도해 주세요.")
+            .setCancelable(false)
+            .setPositiveButton("다시 시도") { _, _ ->
+                if (isNetworkAvailable()) {
+                    loadUrl(pendingPath)
+                } else {
+                    showNetworkDialog()
+                }
+            }
+            .setNeutralButton("설정") { _, _ ->
+                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+            }
+            .setOnDismissListener {
+                networkDialog = null
+            }
+            .create()
+            .also { it.show() }
+    }
+
+    private fun dismissNetworkDialog() {
+        networkDialog?.dismiss()
+        networkDialog = null
     }
 
     private fun hasAllPermissions(): Boolean =
