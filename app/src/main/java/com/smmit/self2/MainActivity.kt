@@ -21,6 +21,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -110,7 +111,6 @@ class MainActivity : AppCompatActivity() {
         with(webView.settings) {
             javaScriptEnabled = true
             domStorageEnabled = true
-            databaseEnabled = true
             setSupportMultipleWindows(true)
             allowFileAccess = true
             // 시스템 글자 크기와 무관하게 UI 배율 고정 (Z Fold / Z Flip 레이아웃 깨짐 방지)
@@ -161,6 +161,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         webView.addJavascriptInterface(JSBridge(), "AndroidBridge")
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val now = System.currentTimeMillis()
+                if (now - lastBackPressed > 2000) {
+                    lastBackPressed = now
+                    Toast.makeText(
+                        this@MainActivity,
+                        "한 번 더 누르시면 앱이 종료됩니다",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                } else {
+                    finish()
+                }
+            }
+        })
 
         loadUrl("/splash")
     }
@@ -247,7 +263,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
         dismissNetworkDialog()
-        val base = "https://smartjaga.gongjak.dev"
+        val base = "http://43.201.9.18:8082"
         webView.loadUrl("$base$path")
         hasLoadedInitialUrl = true
     }
@@ -302,18 +318,4 @@ class MainActivity : AppCompatActivity() {
                     PackageManager.PERMISSION_GRANTED
         }
 
-    override fun onBackPressed() {
-        val now = System.currentTimeMillis()
-        if (now - lastBackPressed > 2000) {
-            lastBackPressed = now
-            Toast.makeText(
-                this,
-                "한 번 더 누르시면 앱이 종료됩니다",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            super.onBackPressed()
-            finish()
-        }
-    }
 }
