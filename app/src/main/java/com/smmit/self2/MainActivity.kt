@@ -254,6 +254,16 @@ class MainActivity : AppCompatActivity() {
 
             return FCMTokenStore.fcmToken
         }
+
+        /** 웹 마이페이지 앱 버전 표시용 (versionName, 예: 1.0.2) */
+        @JavascriptInterface
+        fun getAppVersion(): String {
+            return try {
+                packageManager.getPackageInfo(packageName, 0).versionName ?: ""
+            } catch (_: Exception) {
+                ""
+            }
+        }
     }
 
     private fun loadUrl(path: String) {
