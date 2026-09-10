@@ -39,7 +39,9 @@ class MainActivity : AppCompatActivity() {
     private var cameraPhotoUri: Uri? = null
     private var pendingPath: String = "/splash"
     private var networkDialog: AlertDialog? = null
+    private var permissionGuidanceDialog: AlertDialog? = null
     private var hasLoadedInitialUrl = false
+    private var awaitingReturnFromAppSettings = false
 
     /** 퍼미션 목록 */
     private val requiredPermissions: Array<String> by lazy {
@@ -64,8 +66,16 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { results ->
-            val grantedAll = results.all { it.value }
-            loadUrl(if (grantedAll) "/" else "/intro")
+            if (results.all { it.value }) {
+                loadUrl("/")
+                return@registerForActivityResult
+            }
+
+            val deniedPermissions = results
+                .filter { !it.value }
+                .map { it.key }
+
+            showPermissionGuidanceDialog(deniedPermissions)
         }
 
     private val fileChooserLauncher =
@@ -183,6 +193,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (permissionGuidanceDialog?.isShowing == true) return
+
+        if (awaitingReturnFromAppSettings) {
+            awaitingReturnFromAppSettings = false
+            if (hasAllPermissions()) {
+                loadUrl("/")
+            } else {
+                showPermissionGuidanceDialog(deniedRequiredPermissions())
+            }
+            return
+        }
+
         if (isNetworkAvailable() && (networkDialog?.isShowing == true || !hasLoadedInitialUrl)) {
             dismissNetworkDialog()
             loadUrl(pendingPath)
@@ -224,6 +246,8 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 if (!hasAllPermissions()) {
                     permissionLauncher.launch(requiredPermissions)
+                } else {
+                    loadUrl("/")
                 }
             }
         }
@@ -273,7 +297,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
         dismissNetworkDialog()
-        val base = "http://43.201.9.18:8082"
+        val base = "http://15.165.139.20"
         webView.loadUrl("$base$path")
         hasLoadedInitialUrl = true
     }
@@ -327,5 +351,63 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.checkSelfPermission(this, perm) ==
                     PackageManager.PERMISSION_GRANTED
         }
+
+    private fun deniedRequiredPermissions(): List<String> =
+        requiredPermissions.filter { perm ->
+            ContextCompat.checkSelfPermission(this, perm) !=
+                    PackageManager.PERMISSION_GRANTED
+        }
+
+    private fun koreanPermissionName(permission: String): String? {
+        return when (permission) {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION ->
+                getString(R.string.permission_name_location)
+            Manifest.permission.CAMERA ->
+                getString(R.string.permission_name_camera)
+            Manifest.permission.READ_MEDIA_IMAGES ->
+                getString(R.string.permission_name_photos)
+            Manifest.permission.READ_MEDIA_VIDEO ->
+                getString(R.string.permission_name_video)
+            Manifest.permission.POST_NOTIFICATIONS ->
+                getString(R.string.permission_name_notifications)
+            Manifest.permission.READ_EXTERNAL_STORAGE ->
+                getString(R.string.permission_name_storage)
+            else -> null
+        }
+    }
+
+    private fun showPermissionGuidanceDialog(permissions: Collection<String>) {
+        if (isFinishing || isDestroyed) return
+        if (permissionGuidanceDialog?.isShowing == true) return
+
+        val names = permissions
+            .mapNotNull(::koreanPermissionName)
+            .distinct()
+            .joinToString(", ")
+            .ifBlank { getString(R.string.permission_name_storage) }
+
+        permissionGuidanceDialog = AlertDialog.Builder(this)
+            .setTitle(R.string.permission_guidance_title)
+            .setMessage(getString(R.string.permission_guidance_message, names))
+            .setCancelable(false)
+            .setPositiveButton(R.string.permission_guidance_confirm) { _, _ ->
+                openAppSettings()
+            }
+            .setOnDismissListener {
+                permissionGuidanceDialog = null
+            }
+            .create()
+            .also { it.show() }
+    }
+
+    private fun openAppSettings() {
+        awaitingReturnFromAppSettings = true
+        val intent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", packageName, null),
+        )
+        startActivity(intent)
+    }
 
 }

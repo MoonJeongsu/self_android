@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">스마트 자가진단</string>
+    <string name="permission_guidance_title">필수 권한 안내</string>
+    <string name="permission_guidance_message">현재 필수 권한 거부로 앱을 정상적으로 사용할 수 없습니다.\n설정 &gt;&gt; 애플리케이션 &gt;&gt; 스마트 자가진단 &gt;&gt; 권한 에서 거부된 권한(%1$s)을 허용해 주십시오.\n또는 설정 &gt;&gt; 애플리케이션 &gt;&gt; 스마트 자가진단 &gt;&gt; 저장공간 &gt;&gt; 데이터 삭제 후 앱을 다시 실행 시켜 주십시오.</string>
+    <string name="permission_guidance_confirm">확인</string>
+    <string name="permission_name_location">위치</string>
+    <string name="permission_name_camera">카메라</string>
+    <string name="permission_name_photos">사진</string>
+    <string name="permission_name_video">동영상</string>
+    <string name="permission_name_notifications">알림</string>
+    <string name="permission_name_storage">저장공간</string>
 </resources>
