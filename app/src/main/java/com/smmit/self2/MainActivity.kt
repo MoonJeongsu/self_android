@@ -351,7 +351,7 @@ class MainActivity : AppCompatActivity() {
             attachLayoutListener()
             return
         }
-        val base = "http://15.165.139.20"
+        val base = "http://43.201.9.18:8082"
         hasReceivedPage = false
         lastLoadWidth = webView.width
         lastLoadHeight = webView.height
