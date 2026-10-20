@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.view.ViewTreeObserver
 import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
@@ -42,6 +44,17 @@ class MainActivity : AppCompatActivity() {
     private var permissionGuidanceDialog: AlertDialog? = null
     private var hasLoadedInitialUrl = false
     private var awaitingReturnFromAppSettings = false
+    private var hasReceivedPage = false
+    private var lastLoadWidth = 0
+    private var lastLoadHeight = 0
+    private var layoutListenerAttached = false
+    private var loadErrorDialog: AlertDialog? = null
+
+    private val layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        if (!isWebViewLaidOut()) return@OnGlobalLayoutListener
+        detachLayoutListener()
+        loadUrl(pendingPath)
+    }
 
     /** 퍼미션 목록 */
     private val requiredPermissions: Array<String> by lazy {
@@ -123,19 +136,30 @@ class MainActivity : AppCompatActivity() {
             domStorageEnabled = true
             setSupportMultipleWindows(true)
             allowFileAccess = true
+            useWideViewPort = true
+            loadWithOverviewMode = true
             // 시스템 글자 크기와 무관하게 UI 배율 고정 (Z Fold / Z Flip 레이아웃 깨짐 방지)
             textZoom = 100
         }
 
         webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                hasReceivedPage = true
+            }
+
             override fun onReceivedError(
                 view: WebView?,
                 request: WebResourceRequest?,
                 error: WebResourceError?
             ) {
                 super.onReceivedError(view, request, error)
-                if (request?.isForMainFrame == true && !isNetworkAvailable()) {
+                if (request?.isForMainFrame != true) return
+                hasReceivedPage = false
+                if (!isNetworkAvailable()) {
                     showNetworkDialog()
+                } else {
+                    showLoadErrorDialog()
                 }
             }
         }
@@ -188,7 +212,32 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        loadUrl("/splash")
+        val restored = savedInstanceState?.let { webView.restoreState(it) }
+        if (restored == null) {
+            loadUrl("/splash")
+        } else {
+            pendingPath = savedInstanceState.getString(STATE_PENDING_PATH, "/splash") ?: "/splash"
+            hasLoadedInitialUrl = true
+            hasReceivedPage = true
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        webView.post { reloadIfPaintMissing() }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (::webView.isInitialized) {
+            webView.saveState(outState)
+            outState.putString(STATE_PENDING_PATH, pendingPath)
+        }
+    }
+
+    override fun onDestroy() {
+        detachLayoutListener()
+        super.onDestroy()
     }
 
     override fun onResume() {
@@ -297,9 +346,67 @@ class MainActivity : AppCompatActivity() {
             return
         }
         dismissNetworkDialog()
+        dismissLoadErrorDialog()
+        if (!isWebViewLaidOut()) {
+            attachLayoutListener()
+            return
+        }
         val base = "http://15.165.139.20"
+        hasReceivedPage = false
+        lastLoadWidth = webView.width
+        lastLoadHeight = webView.height
         webView.loadUrl("$base$path")
         hasLoadedInitialUrl = true
+    }
+
+    private fun isWebViewLaidOut(): Boolean =
+        ::webView.isInitialized && webView.width > 0 && webView.height > 0
+
+    private fun attachLayoutListener() {
+        if (!::webView.isInitialized || layoutListenerAttached) return
+        layoutListenerAttached = true
+        webView.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+    }
+
+    private fun detachLayoutListener() {
+        if (!::webView.isInitialized || !layoutListenerAttached) return
+        webView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+        layoutListenerAttached = false
+    }
+
+    private fun reloadIfPaintMissing() {
+        if (!::webView.isInitialized) return
+        if (!isWebViewLaidOut()) {
+            attachLayoutListener()
+            return
+        }
+        val loadedAtZeroSize = lastLoadWidth <= 0 || lastLoadHeight <= 0
+        if (!hasReceivedPage || loadedAtZeroSize) {
+            loadUrl(pendingPath)
+        }
+    }
+
+    private fun showLoadErrorDialog() {
+        if (isFinishing || isDestroyed) return
+        if (loadErrorDialog?.isShowing == true || networkDialog?.isShowing == true) return
+
+        loadErrorDialog = AlertDialog.Builder(this)
+            .setTitle(R.string.webview_load_error_title)
+            .setMessage(R.string.webview_load_error_message)
+            .setCancelable(false)
+            .setPositiveButton(R.string.webview_load_error_retry) { _, _ ->
+                loadUrl(pendingPath)
+            }
+            .setOnDismissListener {
+                loadErrorDialog = null
+            }
+            .create()
+            .also { it.show() }
+    }
+
+    private fun dismissLoadErrorDialog() {
+        loadErrorDialog?.dismiss()
+        loadErrorDialog = null
     }
 
     private fun isNetworkAvailable(): Boolean {
@@ -408,6 +515,10 @@ class MainActivity : AppCompatActivity() {
             Uri.fromParts("package", packageName, null),
         )
         startActivity(intent)
+    }
+
+    companion object {
+        private const val STATE_PENDING_PATH = "pending_path"
     }
 
 }
