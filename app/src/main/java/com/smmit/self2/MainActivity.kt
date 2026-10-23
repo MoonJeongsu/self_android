@@ -65,8 +65,6 @@ class MainActivity : AppCompatActivity() {
         )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            list += Manifest.permission.READ_MEDIA_IMAGES
-            list += Manifest.permission.READ_MEDIA_VIDEO
             list += Manifest.permission.POST_NOTIFICATIONS
         } else {
             list += Manifest.permission.READ_EXTERNAL_STORAGE
@@ -472,10 +470,6 @@ class MainActivity : AppCompatActivity() {
                 getString(R.string.permission_name_location)
             Manifest.permission.CAMERA ->
                 getString(R.string.permission_name_camera)
-            Manifest.permission.READ_MEDIA_IMAGES ->
-                getString(R.string.permission_name_photos)
-            Manifest.permission.READ_MEDIA_VIDEO ->
-                getString(R.string.permission_name_video)
             Manifest.permission.POST_NOTIFICATIONS ->
                 getString(R.string.permission_name_notifications)
             Manifest.permission.READ_EXTERNAL_STORAGE ->

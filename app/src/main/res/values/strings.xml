@@ -6,8 +6,6 @@
     <string name="permission_guidance_confirm">확인</string>
     <string name="permission_name_location">위치</string>
     <string name="permission_name_camera">카메라</string>
-    <string name="permission_name_photos">사진</string>
-    <string name="permission_name_video">동영상</string>
     <string name="permission_name_notifications">알림</string>
     <string name="permission_name_storage">저장공간</string>
     <string name="webview_load_error_title">페이지를 불러오지 못했습니다</string>
