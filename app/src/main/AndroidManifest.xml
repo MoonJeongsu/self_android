@@ -13,11 +13,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
-    <!-- 저장공간 (API 33+ READ_MEDIA_*, 하위버전 READ_EXTERNAL_STORAGE) -->
+    <!-- 저장공간 (Android 12 이하 파일 선택. 13+는 시스템 선택기 URI만 사용) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
